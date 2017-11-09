@@ -15,19 +15,19 @@ class TCPInteraction:
 
     def piServer(self):
         #initialize variables to pass around
-                self.mPosLat = 0
-                self.mPosLon = 0
-                self.heading = 0
-                self.sHeading = 0
-                self.mHeading = 0
-                self.sPosLat = 0
-                self.sPosLon = 0
-                self.magGPS = 0
-                self.imgDistance = 0
-                self.imgHeading = 0
-                self.userOverride = 0
-                self.leftStick = 0
-                self.rightStick = 0
+                self.mPosLat = 0 #master latitude
+                self.mPosLon = 0 #master longitude
+                self.heading = 0 #heading from slave to master
+                self.sHeading = 0 #slave heading from North
+                self.mHeading = 0 #master heading from North
+                self.sPosLat = 0 #slave latitude
+                self.sPosLon = 0 #slave longitude
+                self.magGPS = 0 #distance from slave to master according to GPS (MAGnitude)
+                self.imgDistance = 0 #distance according to image processing
+                self.imgHeading = 0 #heading according to image processing
+                self.userOverride = 0 #user requests control
+                self.leftStick = 0 #user left stick analog forward (left track)
+                self.rightStick = 0 #user right stick analog forward (right track)
                 # set fail counts and timeout vals
                 # begin mainloop
                 while True:
@@ -120,10 +120,10 @@ class TCPInteraction:
 
                     elif self.commandInput == 'restart':
                         conn.send('ack1')
-                        subprocess.call('sudo reboot', shell=True)
+                        #subprocess.call('sudo reboot', shell=True)
                     elif self.commandInput == 'shutdown':
                         conn.send('ack1')
-                        subprocess.call('sudo shutdown now', shell=True)
+                        #subprocess.call('sudo shutdown now', shell=True)
                     elif self.commandInput == 'terminal':
                         conn.send('trml')
                         payload = conn.recv(4096)

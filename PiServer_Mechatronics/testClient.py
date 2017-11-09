@@ -1,20 +1,37 @@
 import socket
+import time
 
-
-class client:
-    def sendMessage(self, message):
+class readClient:
+    def readData(self, command):
         #self.send(message)
-        message = 'rand'
-        host = socket.gethostname()
+        #command = 'rand'
+        #host = socket.gethostname()
+        host = '192.168.0.10'
         port = 9080                  # The same port as used by the server
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((host, port))
-        s.sendall(message.encode())
+        s.sendall(command.encode())
         self.data = s.recv(1024).decode()
         s.close()
         return self.data
 
-myClient = client()
-testMessage = 'rand'
-myClient.sendMessage(testMessage)
-print(myClient.data)
+class writeClient:
+    def setMessage(self,command,message):
+        #host = socket.gethostname()
+        host = '192.168.0.10'
+        port = 9080
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((host, port))
+        #send command to set appropriate if else condition
+        s.sendall(command.encode())
+        time.sleep(.1)
+        #send information for the socket
+        s.sendall(message.encode())
+        #should be good now
+        s.close()
+
+#testWrite = writeClient()
+#testWrite.setMessage('setRStick','123132')
+#myClient = readClient()
+#myClient.readData('getRStick')
+#print(myClient.data)
