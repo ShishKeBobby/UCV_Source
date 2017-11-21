@@ -6,7 +6,7 @@ class readClient:
         #self.send(message)
         #command = 'rand'
         #host = socket.gethostname()
-        host = '192.168.0.10'
+        host = 'localhost'
         port = 9080                  # The same port as used by the server
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((host, port))
@@ -18,7 +18,7 @@ class readClient:
 class writeClient:
     def setMessage(self,command,message):
         #host = socket.gethostname()
-        host = '192.168.0.10'
+        host = 'localhost'
         port = 9080
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((host, port))

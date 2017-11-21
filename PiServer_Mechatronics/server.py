@@ -15,19 +15,19 @@ class TCPInteraction:
 
     def piServer(self):
         #initialize variables to pass around
-                self.mPosLat = 0 #master latitude
-                self.mPosLon = 0 #master longitude
-                self.heading = 0 #heading from slave to master
-                self.sHeading = 0 #slave heading from North
-                self.mHeading = 0 #master heading from North
-                self.sPosLat = 0 #slave latitude
-                self.sPosLon = 0 #slave longitude
-                self.magGPS = 0 #distance from slave to master according to GPS (MAGnitude)
-                self.imgDistance = 0 #distance according to image processing
-                self.imgHeading = 0 #heading according to image processing
-                self.userOverride = 0 #user requests control
-                self.leftStick = 0 #user left stick analog forward (left track)
-                self.rightStick = 0 #user right stick analog forward (right track)
+                self.mPosLat = '0' #master latitude
+                self.mPosLon = '0' #master longitude
+                self.heading = '0' #heading from slave to master
+                self.sHeading = '0' #slave heading from North
+                self.mHeading = '0' #master heading from North
+                self.sPosLat = '0' #slave latitude
+                self.sPosLon = '0' #slave longitude
+                self.magGPS = '0' #distance from slave to master according to GPS (MAGnitude)
+                self.imgDistance = '0' #distance according to image processing
+                self.imgHeading = '0' #heading according to image processing
+                self.userOverride = '0' #user requests control
+                self.leftStick = '0' #user left stick analog forward (left track)
+                self.rightStick = '0' #user right stick analog forward (right track)
                 # set fail counts and timeout vals
                 # begin mainloop
                 while True:
@@ -56,10 +56,10 @@ class TCPInteraction:
                         self.sPosLat = conn.recv(4096) #set master position
 
                     elif self.commandInput == "getSPosLon":
-                        conn.send(self.sPos)  # send master position
+                        conn.send(self.sPosLon)  # send master position
 
                     elif self.commandInput == "setSPosLon":
-                        self.sPos = conn.recv(4096)  # set master position
+                        self.sPosLon = conn.recv(4096)  # set master position
 
                     elif self.commandInput == "getHeading":
                         conn.send(self.heading) #send master position
@@ -134,5 +134,10 @@ class TCPInteraction:
 
 
 #start server....
+
 tcpStuff = TCPInteraction()
-tcpStuff.piServer()
+while(1):
+	try:
+		tcpStuff.piServer()
+	except Exception as e:
+		print(e)

@@ -43,25 +43,22 @@ while(cap.isOpened()):
             center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
             cv2.circle(frame, (int(x), int(y)), int(radius), (0, 255, 255), 2)
             cv2.circle(frame, center, 5, (0, 0, 255), -1)
-            try:
-                if radius > 20:
-                    #money maker here
-                    #setImgDist and setImgHeading are the commands of interest
-                    myClient.setMessage('setImgDist',str(radius))
-                    print("x =",x," y=",y," r=",radius)
-                    myClient.setMessage('setImgHeading',str(x))
-                    #y shouldn't really matter as height of the follow target would indicate terrain problems which
-                    #is outside the scope of this project
+            if radius > 20:
+                #money maker here
+                #setImgDist and setImgHeading are the commands of interest
+                myClient.setMessage('setImgDist',radius)
+                print("x =",x," y=",y," r=",radius)
+                myClient.setMessage('setImgHeading',x)
+                #y shouldn't really matter as height of the follow target would indicate terrain problems which
+                #is outside the scope of this project
 
-                else:
-                    #zero out heading and distance if the image isn't reliable (radius < 20 pixels)
-                    #this will be the 'trigger' for the GPS to take over navigation
-                    myClient.setMessage('setImgDist',str(0))
-                    myClient.setMessage('setImgHeading',str(0))
-                    print("go-to gps")
-            except Exception as e:
-                print(e)
-        #cv2.imshow('outVideo',frame)
+            else:
+                #zero out heading and distance if the image isn't reliable (radius < 20 pixels)
+                #this will be the 'trigger' for the GPS to take over navigation
+                myClient.setMessage('setImgDist',0)
+                myClient.setMessage('setImgHeading',0)
+                print("go-to gps")
+        cv2.imshow('outVideo',frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
     

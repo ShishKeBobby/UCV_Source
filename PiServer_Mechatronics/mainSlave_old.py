@@ -6,45 +6,28 @@ import serial
 navigator = navigation.navigate()
 myClient = testClient.readClient()
 writeClient = testClient.writeClient()
-payload = ""
-sleepVar = .9
 try:
-    ser = serial.Serial('/dev/ttyACM0',115200, timeout=10)
+    ser = serial.Serial('/dev/ttyACM0',115200, timeout=1)
 except:
-    try:
-        ser = serial.Serial('/dev/ttyACM1',115200, timeout=10)
-    except:
-        pass
+    ser = serial.Serial('/dev/ttyACM1',115200, timeout=1)
 while(1):
     try:
-        #ready = ser.readline(); #blocking function until Ard. is ready
-        #print(ready)
         userOverride = int(myClient.readData('getUserOverride'))
         radius = int(float(myClient.readData('getImgDist')))
         if userOverride == 1:
             #user override enabled, pull
             lStick = float(myClient.readData('getLStick'))*255
             rStick = float(myClient.readData('getRStick'))*255
-            lastPayload = payload
             payload = 'c'+str(int(lStick))+'Z'+str(int(rStick))
-            if payload != lastPayload:
-                ser.write(payload.encode())
-                print('User ='+payload)
-                time.sleep(2)
-            else:
-                pass
+            ser.write(payload.encode())
+            print('User ='+payload)
         elif radius > 20:
             #radius in known
             xPos = int(float(myClient.readData('getImgHeading')))
             #now send info to arduino
-            lastPayload = payload
             payload = 'b'+str(xPos) +'Z'+str(radius)
-            if payload != lastPayload:
-                ser.write(payload.encode())
-                print('image ='+payload)
-		time.sleep(sleepVar)
-            else:
-                pass
+            ser.write(payload.encode())
+            print('image= '+payload)
         else:
             masterHeading = myClient.readData('getMHeading')
             #slaveHeading = myClient.readData('getSHeading')
@@ -65,8 +48,7 @@ while(1):
             payload = 'a'+latM + 'Z'+lonM + 'Z' + masterHeading
             ser.write(payload.encode())
             print('lat/lon= '+payload)
-            time.sleep(2)
-        
+        time.sleep(.5)
     except Exception as e:
         print(e)
         time.sleep(1)

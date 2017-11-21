@@ -2,9 +2,6 @@ import RPi.GPIO as GPIO
 from lib_nrf24 import NRF24
 import time
 import spidev
-import testClient
-
-myClient = testClient.writeClient()
 
 GPIO.setmode(GPIO.BCM)
 
@@ -35,28 +32,22 @@ while True:
 	for n in receivedMessage:
 		if(n >=32 and n <= 126):
 			string += chr(n)
+	
+	string = string.strip(' \t\n\r')
 	if string.endswith('a'):
 		string = string[:-1]
-		#command for set lat is setMPosLat
-		myClient.setMessage('setMPosLat',string)
 		print("latitude ="+string)
 	elif string.endswith('o'):
 		string = string[:-1]
-		#command for set lon is setMPosLon
-		myClient.setMessage('setMPosLon',string)
 		print("longitude ="+string)
 	elif string.endswith('m'):
 		string = string[:-1]
-		myClient.setMessage('setMHeading', string)
 		print("heading ="+string)
 	elif string.endswith('v'):
 		string = string[:-1]
-		print("velocity="+string)
+		print("velocity ="+string)
 	elif string.endswith('s'):
 		string = string[:-1]
-		print("sats visible ="+string)
+		print("sats ="+string)
 	else:
-		#remove padding
-		string = string.strip(' \t\n\r')
-		#myClient.setMessage('setMPosLon',string)
 		print("ERROR:"+string)
