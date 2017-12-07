@@ -23,7 +23,7 @@ class TCPInteraction:
                 self.sPosLat = '0' #slave latitude
                 self.sPosLon = '0' #slave longitude
                 self.magGPS = '0' #distance from slave to master according to GPS (MAGnitude)
-                self.imgDistance = '0' #distance according to image processing
+                self.imgDistance = '0,0' #distance according to image processing
                 self.imgHeading = '0' #heading according to image processing
                 self.userOverride = '0' #user requests control
                 self.leftStick = '0' #user left stick analog forward (left track)

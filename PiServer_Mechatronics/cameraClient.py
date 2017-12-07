@@ -19,6 +19,8 @@ if not cap.isOpened():
             cap.release()
             cv2.destroyAllWindows()
             cap = cv2.VideoCapture(0)
+#cap.set(3,320)
+#cap.set(4,240)
 # define range of green color in HSV
 diluteKernel = np.ones((3,3), np.uint8)
 dilateKernel = np.ones((7,7), np.uint8)
@@ -31,6 +33,7 @@ while(cap.isOpened()):
     b,g,r = cv2.split(frame)
     cv2.circle(frame,(400,200), 70, (0,255,0), 1)
     if ret: #check !
+        frame = cv2.resize(frame, (0,0), fx = 0.5, fy = 0.5)
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         frame = cv2.inRange(frame, lower_blue, upper_blue)
         frame = cv2.erode(frame, diluteKernel, iterations=2)
@@ -48,7 +51,8 @@ while(cap.isOpened()):
                     #money maker here
                     #setImgDist and setImgHeading are the commands of interest
                     myClient.setMessage('setImgDist',str(radius))
-                    print("x =",x," y=",y," r=",radius)
+                    #print("x =",x," y=",y," r=",radius)
+                    print(x)
                     myClient.setMessage('setImgHeading',str(x))
                     #y shouldn't really matter as height of the follow target would indicate terrain problems which
                     #is outside the scope of this project
@@ -60,7 +64,8 @@ while(cap.isOpened()):
                     myClient.setMessage('setImgHeading',str(0))
                     print("go-to gps")
             except Exception as e:
-                print(e)
+                pass
+                #print(e)
         #cv2.imshow('outVideo',frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
